@@ -1,0 +1,83 @@
+#******************** Settings ************************
+*** Settings ***
+# TODO: Write Documentation e.g. User Registration Test scenario with verification, valid and invalid credentials.
+Documentation	User Registration Test scenario with verification, valid and invalid credentials.
+# TODO: Write Precondition, Postcondition, Tags
+Pre Condition	Open Browser
+Post Condition	Close All Browsers
+Tags	Register, TS-3-Register
+
+#******************* Common Variables ********************
+*** Variables ***
+# NOTE: Please Remove your login credential before uploading Assignments
+# TODO: Write Registration field variables
+LoginUrl= https://gitlab.com/users/sign_up
+ValidFirstName= John
+ValidLastName= Doe
+ValidEmail= johndoe@example.com
+ValidUsername= johndoe123
+ValidPassword= Test@12345
+InvalidEmail= notanemail
+InvalidPassword= 123
+TakenEmail= existing@example.com
+TakenUsername= existinguser
+Empty=
+
+#******************** Test Cases *************************
+*** Test Cases ***
+# TODO: Write Positive and Negative Test Cases and Test Process steps (Think about possible test cases)
+# Positive Test examples are below write test process steps for each below test case
+
+Register user with valid username and password
+    Navigate To Register Page  LoginUrl
+    Input First Name  ValidFirstName
+    Input Last Name  ValidLastName
+    Input Email  ValidEmail
+    Input Username  ValidUsername
+    Input Password  ValidPassword
+    Submit Register Form
+    Verify Page Should Contain Welcome to GitLab
+
+# Negative Test examples keywords are below write test process steps for each below test case
+
+Register user with same above username
+    Navigate To Register Page  LoginUrl
+    Input First Name  ValidFirstName
+    Input Last Name  ValidLastName
+    Input Email  ValidEmail
+    Input Username  TakenUsername
+    Input Password  ValidPassword
+    Submit Register Form
+    Verify That Error Message Should Show Username has already been taken
+
+Register user with empty password
+    Navigate To Register Page  LoginUrl
+    Input First Name  ValidFirstName
+    Input Last Name  ValidLastName
+    Input Email  ValidEmail
+    Input Username  ValidUsername
+    Input Password  Empty
+    Submit Register Form
+    Verify That Error Message Should Show This field is required
+
+Register user with invalid email
+    Navigate To Register Page  LoginUrl
+    Input First Name  ValidFirstName
+    Input Last Name  ValidLastName
+    Input Email  InvalidEmail
+    Input Username  ValidUsername
+    Input Password  ValidPassword
+    Submit Register Form
+    Verify That Error Message Should Show Please enter a valid email address
+
+Register user without recaptcha
+    Navigate To Register Page  LoginUrl
+    Input First Name  ValidFirstName
+    Input Last Name  ValidLastName
+    Input Email  ValidEmail
+    Input Username  ValidUsername
+    Input Password  ValidPassword
+    Skip Recaptcha Verification
+    Submit Register Form
+    Verify That Error Message Should Show Please complete the reCAPTCHA verification
+

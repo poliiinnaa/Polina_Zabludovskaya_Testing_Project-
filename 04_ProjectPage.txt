@@ -1,0 +1,71 @@
+
+#******************** Settings ************************
+*** Settings ***
+# TODO: Write Documentation e.g. Project Test scenario. CRUD Operation: Create, Read, Update, Delete
+Documentation	Project Test scenario. CRUD Operation: Create, Read, Update, Delete for GitLab projects.
+# TODO: Write Precondition, Postcondition, Tags
+Pre Condition	Open Browser, User is logged in to GitLab
+Post Condition	Close All Browsers
+Tags	Project, TS-4-Project
+
+#******************* Common Variables ********************
+*** Variables ***
+# NOTE: Please Remove your login credential before uploading Assignments
+# TODO: Write Project creation field variables
+ProjectUrl= https://gitlab.com/projects/new
+BlankProjectUrl= https://gitlab.com/projects/new#blank_project
+TemplateProjectUrl= https://gitlab.com/projects/new#create_from_template
+ProjectName= First project
+UpdatedProjectName= Updated project
+DuplicateProjectName= First project
+Empty=
+
+#******************** Test Cases *************************
+*** Test Cases ***
+# TODO: Write Positive and Negative Test Cases and Test Process steps
+# Positive Test examples are below write test process steps for each below test case
+
+Create blank project
+    Navigate To Project Page  BlankProjectUrl
+    Input Project Name  ProjectName
+    Select Visibility Level  Private
+    Submit Create Project Form
+    Verify Page Should Contain Project 'First project' was successfully created.
+
+Create template project
+    Navigate To Project Page  TemplateProjectUrl
+    Select Project Template  Ruby on Rails
+    Input Project Name  ProjectName
+    Select Visibility Level  Private
+    Submit Create Project Form
+    Verify Page Should Contain Project 'First project' was successfully created.
+
+Update name of template project
+    Navigate To Project Settings  ProjectName
+    Clear Project Name Field
+    Input Project Name  UpdatedProjectName
+    Submit Save Changes Form
+    Verify Page Should Contain Project was successfully updated.
+
+Delete template project
+    Navigate To Project Settings  UpdatedProjectName
+    Click Delete Project Button
+    Input Project Name Confirmation  UpdatedProjectName
+    Confirm Delete Project
+    Verify Page Should Contain Project 'Updated project' is in the process of being deleted.
+
+Validate that message is showing Project 'First project' was successfully created
+    Navigate To Project Page  BlankProjectUrl
+    Input Project Name  ProjectName
+    Select Visibility Level  Private
+    Submit Create Project Form
+    Verify Page Should Contain Project 'First project' was successfully created.
+
+# Negative Test examples are below write test process steps for each below test case
+
+Create a blank project with the previous same name
+    Navigate To Project Page  BlankProjectUrl
+    Input Project Name  DuplicateProjectName
+    Select Visibility Level  Private
+    Submit Create Project Form
+    Verify That Error Message Should Show Project path has already been taken

@@ -1,0 +1,53 @@
+
+#******************** Settings ************************
+*** Settings ***
+Documentation	Issue Test scenario. CRUD Operation: Create, Read, Update, Delete
+# TODO: Write Precondition and Postcondition, Tags
+Pre Condition	Open Browser, User is logged in to GitLab, Project must be created by the user before
+Post Condition	Close All Browsers
+Tags	Issue, TS-5-Issue
+
+#******************* Common Variables ********************
+*** Variables ***
+# NOTE: Please Remove your login credential before uploading Assignments
+# TODO: Write Issue creation field variables, Updated name of the issue
+IssueUrl= https://gitlab.com/your-username/first-project/-/issues/new
+IssueName= First issue
+UpdatedIssueName= Updated first issue
+SecondIssueName= Updated first issue
+Empty=
+
+#******************** Test Cases *************************
+*** Test Cases ***
+# TODO: Write Positive Test Cases and Test Process steps
+# Positive Test examples are below write test process steps for each below test case
+
+Create issue
+    Navigate To Issue Page  IssueUrl
+    Input Issue Title  IssueName
+    Input Issue Description  This is a test issue
+    Assign Issue To  CurrentUser
+    Submit Create Issue Form
+    Verify Page Should Contain Issue 'First issue' was successfully created.
+
+Update name of issue
+    Navigate To Issue Page  IssueUrl
+    Click Edit Issue Button  IssueName
+    Clear Issue Title Field
+    Input Issue Title  UpdatedIssueName
+    Submit Save Changes Form
+    Verify Page Should Contain Issue was successfully updated.
+
+Create second issue with previous updated name
+    Navigate To Issue Page  IssueUrl
+    Input Issue Title  SecondIssueName
+    Input Issue Description  This is a second test issue
+    Submit Create Issue Form
+    Verify Page Should Contain Issue 'Updated first issue' was successfully created.
+
+Delete first issue
+    Navigate To Issue Page  IssueUrl
+    Click Edit Issue Button  UpdatedIssueName
+    Click Delete Issue Button
+    Confirm Delete Issue
+    Verify Page Should Contain Issue was successfully deleted.
